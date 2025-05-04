@@ -12,3 +12,17 @@ C:\Users\ravir\Downloads\Pizza Shop\PizzaShop.Entity\obj\Debug\net7.0\refint\Piz
 C:\Users\ravir\Downloads\Pizza Shop\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.pdb
 C:\Users\ravir\Downloads\Pizza Shop\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.genruntimeconfig.cache
 C:\Users\ravir\Downloads\Pizza Shop\PizzaShop.Entity\obj\Debug\net7.0\ref\PizzaShop.Entity.dll
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\bin\Debug\net7.0\PizzaShop.Entity.deps.json
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\bin\Debug\net7.0\PizzaShop.Entity.runtimeconfig.json
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\bin\Debug\net7.0\PizzaShop.Entity.dll
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\bin\Debug\net7.0\PizzaShop.Entity.pdb
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.csproj.AssemblyReference.cache
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.AssemblyInfoInputs.cache
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.AssemblyInfo.cs
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.csproj.CoreCompileInputs.cache
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.dll
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\refint\PizzaShop.Entity.dll
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.pdb
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\PizzaShop.Entity.genruntimeconfig.cache
+C:\Users\ravir\Downloads\Pizza-Shop New\PizzaShop.Entity\obj\Debug\net7.0\ref\PizzaShop.Entity.dll
