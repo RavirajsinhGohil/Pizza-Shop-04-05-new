@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Entity\\PizzaShop.Entity.csproj": {}
+    "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Entity\\PizzaShop.Entity.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Entity\\PizzaShop.Entity.csproj": {
+    "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Entity\\PizzaShop.Entity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Entity\\PizzaShop.Entity.csproj",
+        "projectUniqueName": "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Entity\\PizzaShop.Entity.csproj",
         "projectName": "PizzaShop.Entity",
-        "projectPath": "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Entity\\PizzaShop.Entity.csproj",
+        "projectPath": "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Entity\\PizzaShop.Entity.csproj",
         "packagesPath": "C:\\Users\\ravir\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Entity\\obj\\",
+        "outputPath": "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Entity\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ravir\\AppData\\Roaming\\NuGet\\NuGet.Config"

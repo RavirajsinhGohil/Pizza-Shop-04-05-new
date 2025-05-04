@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iz2szUWFBo6vgEReUmB42ASphRBgbDWhY8Ttjm5afbgpTu73ogo8WUno7jkg5Gty4A5L3PW/b86HgIYAAyJLxg==",
+  "dgSpecHash": "vIY0W+CwMQmdI9OwONb6kVcrt8XLYKozvmzsqFgQa6s3rcCru0XQlYOI1dFec2MsoPuDVbDpzGaoKJ7FFwfPfA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Entity\\PizzaShop.Entity.csproj",
+  "projectFilePath": "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Entity\\PizzaShop.Entity.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ravir\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\ravir\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

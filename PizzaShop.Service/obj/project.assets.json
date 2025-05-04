@@ -8492,11 +8492,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Service\\PizzaShop.Service.csproj",
+      "projectUniqueName": "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Service\\PizzaShop.Service.csproj",
       "projectName": "PizzaShop.Service",
-      "projectPath": "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Service\\PizzaShop.Service.csproj",
+      "projectPath": "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Service\\PizzaShop.Service.csproj",
       "packagesPath": "C:\\Users\\ravir\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Service\\obj\\",
+      "outputPath": "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Service\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ravir\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -8511,11 +8511,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Entity\\PizzaShop.Entity.csproj": {
-              "projectPath": "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Entity\\PizzaShop.Entity.csproj"
+            "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Entity\\PizzaShop.Entity.csproj": {
+              "projectPath": "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Entity\\PizzaShop.Entity.csproj"
             },
-            "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Repository\\PizzaShop.Repository.csproj": {
-              "projectPath": "C:\\Users\\ravir\\Downloads\\Pizza Shop\\PizzaShop.Repository\\PizzaShop.Repository.csproj"
+            "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Repository\\PizzaShop.Repository.csproj": {
+              "projectPath": "C:\\Users\\ravir\\Downloads\\Pizza-Shop New\\PizzaShop.Repository\\PizzaShop.Repository.csproj"
             }
           }
         }
