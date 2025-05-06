@@ -395,8 +395,8 @@
                                 </div>
                                 <div>
                                     <div class="ms-1">
-                                        <button type="button" class="btn  m-3 fw-bold custom-blue-color custom-blue-border" data-bs-toggle="modal"
-                                            data-bs-target="#addModifierGroupModal"
+                                        <button type="button" class="btn  m-3 fw-bold custom-blue-color custom-blue-border" 
+                                            onclick="openAddModifierGroupModal();"
                                             style=" background: transparent;">+
                                             @* <img style="height: 20px;" src="~/images/icons/plus-square.svg"
                                                 alt="image"> *@
@@ -430,11 +430,11 @@
                                                             @* Link for add Existing Modifiers *@
                                                             <div class="mb-2">
                                                                 <button type="button" id="addModifiersInGroup" style="border: none;" class="border-none bg-white text-primary" 
-                                                                    data-toggle="modal" data-bs-target="#addExistingModal">
+                                                                    onclick="openAddExistingModifiersModal();">
                                                                         + Add Existing Modifiers
                                                                 </button>
                                                             </div>
-                                                            <div class="d-flex" id="existingModifiersContainerForAdd">
+                                                            <div class="d-flex " style="flex-wrap: wrap;" id="existingModifiersContainerForAdd">
 
                                                             </div>
                                                         </div>
@@ -552,7 +552,7 @@
                                                         </button>
                                                     </div>
 
-                                                    <div class="d-flex w-100" id="existingModifiersContainer" style=" width: fit-content;">
+                                                    <div class="d-flex w-100" style="flex-wrap: wrap;" id="existingModifiersContainer" style=" width: fit-content;">
 
                                                     </div>
 

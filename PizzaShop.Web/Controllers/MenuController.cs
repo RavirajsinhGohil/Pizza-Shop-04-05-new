@@ -4,6 +4,7 @@ using PizzaShop.Entity.ViewModel;
 using PizzaShop.Entity.Models;
 using PizzaShop.Entity.Constants;
 using PizzaShop.Service.Implementations;
+using System.Threading.Tasks;
 
 
 namespace PizzaShop.Web.Controllers;
@@ -150,6 +151,21 @@ public class MenuController : Controller
         }
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetModifierGroupForEditItem(int modifierGroupId)
+    {
+        try
+        {
+            ModifierGroupViewModel modifiergroup = await _menuService.GetModifierGroupForEdit(modifierGroupId);
+            return Json(new { success = true, data = modifiergroup });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return RedirectToAction("Menu", "Menu");
+        }
+    }
+
     [HttpPost]
     public async Task<IActionResult> AddNewItem([FromBody] ItemViewModel model)
     {
@@ -188,11 +204,11 @@ public class MenuController : Controller
 
     // POST: Edit Menu Item (update the item)
     [HttpPost]
-    public IActionResult EditMenuItem(int id, [FromForm] MenuItemViewModel model)
+    public async Task<IActionResult> EditMenuItem(int id, [FromForm] MenuItemViewModel model)
     {
         try
         {
-            bool result = _menuService.UpdatedMenuItem(model.Item.Itemid, model);
+            bool result = await _menuService.UpdatedMenuItem(model.Item.Itemid, model);
             if (result == false)
             {
                 return Json(new { errror = true, message = Constants.ErrorInUpdateItem });
@@ -201,8 +217,9 @@ public class MenuController : Controller
             return Json(new { success = true, message = Constants.ItemUpdated });
 
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine(ex);
             return RedirectToAction("Menu", "Menu");
         }
     }

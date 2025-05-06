@@ -243,6 +243,20 @@ public class MenuRepository : IMenuRepository
         _dbo.SaveChanges();
     }
 
+    public async Task<List<Itemmodifiergroupmapping>> GetItemModifierGroupMappingsById(int itemId)
+    {
+        return await _dbo.Itemmodifiergroupmappings
+            .Where(i => i.Itemid == itemId && i.Isitemmodifiable == false)
+            .ToListAsync();
+    }
+
+    public async Task<bool> UpdateItemModifierGroupMappings(Itemmodifiergroupmapping itemModifierGroupMapping)
+    {
+        _dbo.Itemmodifiergroupmappings.Update(itemModifierGroupMapping);
+        await _dbo.SaveChangesAsync();
+        return true;
+    }
+
     public bool DeleteItem(int itemId)
     {
         Item item = _dbo.Items.FirstOrDefault(i => i.Itemid == itemId);
@@ -299,6 +313,13 @@ public class MenuRepository : IMenuRepository
             Console.WriteLine(ex);
             return false;
         }
+    }
+
+    public async Task<bool> DeleteItemModifierGroupMappings(Itemmodifiergroupmapping model)
+    {
+        _dbo.Itemmodifiergroupmappings.Remove(model);
+        await _dbo.SaveChangesAsync();
+        return true;
     }
 
     public Itemmodifiergroupmapping GetItemModifierGroupMappingsById(int modifierId, int modifierGroupId)

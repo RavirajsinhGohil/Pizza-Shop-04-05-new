@@ -4,6 +4,7 @@ using PizzaShop.Entity.Models;
 using PizzaShop.Entity.ViewModel;
 using PizzaShop.Service.Interfaces;
 using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace PizzaShop.Service.Implementations;
 
@@ -125,6 +126,7 @@ public class MenuService : IMenuService
             {
                 Itemid = totalItems,
                 Modifiergroupid = modifierGroup.Id,
+                Isitemmodifiable = false,
                 Minquantity = modifierGroup.Min,
                 Maxquantity = modifierGroup.Max,
             };
@@ -157,8 +159,8 @@ public class MenuService : IMenuService
 
         foreach (int modifierGroupId in modifierGroupIds)
         {
-            var abc = ItemModifierGroup.Where(mg => mg.Modifiergroupid == modifierGroupId);
             ModifierGroupViewModel? modifiergroup = modifierGroups.FirstOrDefault(mg => mg.ModifierGroupId == modifierGroupId);
+            
             // modifiergroup.Min = ItemModifierGroup.Where(mg => mg.Modifiergroupid == modifierGroupId).Select(m => m.Minquantity)
 
             Itemmodifiergroupmapping? mapping = ItemModifierGroup.FirstOrDefault(mg => mg.Modifiergroupid == modifierGroupId && mg.Itemid == id);
@@ -197,7 +199,7 @@ public class MenuService : IMenuService
         };
     }
 
-    public bool UpdatedMenuItem(int id, MenuItemViewModel model)
+    public async Task<bool> UpdatedMenuItem(int id, MenuItemViewModel model)
     {
         Item item = _menuRepository.GetItemById(model.Item.Itemid);
         if (item == null)
@@ -205,7 +207,7 @@ public class MenuService : IMenuService
             return false;
         }
 
-        var updatedItem = model.Item;
+        ItemViewModel? updatedItem = model.Item;
         if (updatedItem != null)
         {
             item.Itemname = updatedItem.Name;
@@ -222,6 +224,41 @@ public class MenuService : IMenuService
             item.Ismodifiable = false;
         }
         _menuRepository.UpdateItem(item);
+        List<Itemmodifiergroupmapping>? itemModifierGroupMappings = await _menuRepository.GetItemModifierGroupMappingsById(id);
+
+        foreach (var modifierGroup in model.Item.ModifierGroupData)
+        {
+            var mapping = itemModifierGroupMappings.FirstOrDefault(m => m.Itemid == id && m.Modifiergroupid == modifierGroup.Id);
+            if (mapping != null)
+            {
+                mapping.Minquantity = modifierGroup.Min;
+                mapping.Maxquantity = modifierGroup.Max;
+                await _menuRepository.UpdateItemModifierGroupMappings(mapping);
+            }
+            else
+            {
+                Itemmodifiergroupmapping? newMapping = new Itemmodifiergroupmapping
+                {
+                    Itemid = id,
+                    Modifiergroupid = modifierGroup.Id,
+                    Isitemmodifiable = false,
+                    Minquantity = modifierGroup.Min,
+                    Maxquantity = modifierGroup.Max
+                };
+                await _menuRepository.AddItemModifierGroupMappings(newMapping);
+            }
+        }
+
+        //Code for deleting mappings that are not in the new list
+        foreach (var mapping in itemModifierGroupMappings)
+        {
+            //Checking of modifierGroupId of the mapping and the modifierGroupData of the model
+            if (!model.Item.ModifierGroupData.Any(m => m.Id == mapping.Modifiergroupid))
+            {
+                await _menuRepository.DeleteItemModifierGroupMappings(mapping);
+            }
+        }
+        
         return true;
     }
 

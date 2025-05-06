@@ -276,35 +276,6 @@ $(document).ready(function () {
 
 });
 
-
-// Trigger the AJAX call when the edit link is clicked
-$('body').on('click', '.edit-icon', function (e) {
-    e.preventDefault();
-    var itemId = $(this).data('id');
-    $.ajax({
-        url: 'Menu/GetMenuItemForEdit',
-        type: 'GET',
-        data: { id: itemId },
-        success: function (response) {
-            // console.log("data :", response.data.item);
-            // var data = response.data.item;
-            $("#EditItemModal").html(response);
-
-            $(".deleteModifierGroupInEditModal").on('click', function () {
-                let modifierGroupId = $(this).data('id');
-                console.log("modifierGroupId", modifierGroupId);
-                $(`.appendModifierGroupInEditItem_${modifierGroupId}`).remove();
-            });
-        },
-        error: function (xhr, status, error) {
-            console.log('Error:', error);
-            // @* alert('There was an error loading the item data.'); *@
-        }
-    });
-});
-
-
-
 $('body').on('click', '.editCategoryBtn', function (e) {
     e.preventDefault();
     var itemId = $(this).data('id');
@@ -384,6 +355,7 @@ $(document).on("change", ".rowModifierCheck", function () {
 $(document).on('click', "#saveAddExistingModifiers", function () {
     $('#addExistingModifiersModal').modal('hide');
     $('#editModifierGroup').modal('show');
+    $("#addExistingModal").modal("hide");
     console.log('selectedeads', selectedModifiers);
     console.log('existingsdlkasdspodmasd', existingModifiers);
 
@@ -392,10 +364,10 @@ $(document).on('click', "#saveAddExistingModifiers", function () {
     // Append new modifiers
     selectedModifiers.forEach(function (modifierName, modifierId) {
         $('#existingModifiersContainer').append(
-            `<div class="d-flex align-items-center bg-info rounded-pill me-2">
-            <div class="d-flex m-2 existingModifier">${modifierName}</div>
-            <button type="button" class="btn-close removeModifierBtn" data-id="${modifierId}" aria-label="Close"></button>
-        </div>`
+            `<div class="d-flex align-items-center bg-info rounded-pill mt-2 me-2">
+                <div class="d-flex m-2 existingModifier">${modifierName}</div>
+                <button type="button" class="btn-close removeModifierBtn" data-id="${modifierId}" aria-label="Close"></button>
+            </div>`
         );
     });
 });
@@ -429,7 +401,7 @@ $(document).on('click', '#editModifierGroupBtn', function (e) {
                 // Append new modifiers
                 selectedModifiers.forEach(function (modifierName, modifierId) {
                     $('#existingModifiersContainer').append(
-                        `<div class="d-flex align-items-center bg-info rounded-pill me-2">
+                        `<div class="d-flex align-items-center bg-info rounded-pill mt-2 me-2">
                         <div class="d-flex m-2 existingModifier">${modifierName}</div>
                         <button type="button" class="btn-close removeModifierBtn" data-id="${modifierId}" aria-label="Close"></button>
                     </div>`
@@ -752,19 +724,35 @@ $(document).on('click', "#confirmBulkDeleteModifiersBtn", function () {
 });
 
 // @* ************* *@
-$(document).off("change", ".rowModifierCheckForAdd"); // For remove event listners from previous edit modifierGroup
-$(document).on("change", ".rowModifierCheckForAdd", function () {
-    let modifierId = $(this).data('id');
-    let modifierName = $(this).data('name');
 
-    if ($(this).is(":checked")) {
-        selectedModifiersForAdd.set(modifierId, modifierName);
-        console.log("selectedModifiersForAdd 7567:", selectedModifiersForAdd);
-        jsonStringForAdd.push(modifierId);
-    } else {
-        selectedModifiersForAdd.delete(modifierId);
-        jsonStringForAdd.pop(modifierId);
+var allModifierIds = [];
+
+$('.modifiersIdsForAdd').each(function () {
+    var modifierId = $(this).data('id');
+    if (modifierId !== undefined) {
+        allModifierIds.push(modifierId);
     }
+});
+
+console.log("allModifierIds :", allModifierIds);
+
+allModifierIds.forEach(function (modifierId) {
+    $(document).off("change", `.rowModifierCheckForAdd_${modifierId}`); // For remove event listners from previous edit modifierGroup
+    $(document).on("change", `.rowModifierCheckForAdd_${modifierId}`, function () {
+        let modifierId = $(this).data('id');
+        let modifierName = $(this).data('name');
+
+        if ($(this).is(":checked")) {
+            selectedModifiersForAdd.set(modifierId, modifierName);
+            console.log("selectedModifiersForAdd 7567:", selectedModifiersForAdd);
+            jsonStringForAdd.push(modifierId);
+            existingModifiersForAdd.push(modifierId);
+        } else {
+            selectedModifiersForAdd.delete(modifierId);
+            jsonStringForAdd.pop(modifierId);
+            existingModifiersForAdd.pop(modifierId);
+        }
+    });
 });
 
 //For open modal on add existing modifiers in add modifier group modal
@@ -797,17 +785,24 @@ $(document).on('click', "#saveAddExistingModifiersForAdd", function () {
     $('#addModifierGroupModal').modal('show');
     console.log('selectedeads', selectedModifiersForAdd);
 
-    $('#existingModifiersContainer').empty();
+    $('#existingModifiersContainerForAdd').empty();
 
-    // Append new modifiers
+    // Append new modifiers For Add
     selectedModifiersForAdd.forEach(function (modifierName, modifierId) {
-        existingModifiersForAdd.push(modifierId);
         $('#existingModifiersContainerForAdd').append(
-            `<div class="d-flex align-items-center bg-info rounded-pill me-2">
-            <div class="d-flex m-2 existingModifier">${modifierName}</div>
-            <button type="button" class="btn-close removeModifierBtn" data-id="${modifierId}" aria-label="Close"></button>
-        </div>`
+            `<div class="d-flex align-items-center modifierInAddModal_${modifierId} bg-info rounded-pill mt-2 me-2">
+                <div class="d-flex m-2 existingModifier">${modifierName}</div>
+                <button type="button" class="btn-close removeModifierBtn_${modifierId}" data-id="${modifierId}" aria-label="Close"></button>
+            </div>`
         );
+        $(document).on('click', `.removeModifierBtn_${modifierId}`, function (e) {
+            e.preventDefault();
+            let unCheckModifierId = $(this).data('id');
+            selectedModifiersForAdd.delete(unCheckModifierId);
+            existingModifiersForAdd.pop(unCheckModifierId);
+            console.log("unCheckModifierId", unCheckModifierId);
+            $(`.modifierInAddModal_${unCheckModifierId}`).remove();
+        });
     });
 });
 
@@ -818,7 +813,6 @@ $(document).on('change', "#ModifierGroupsInNewItemSelect", function () {
     var modifierGroupId = $(this).val();
     modifierGroupForAdd.push(modifierGroupId);
     console.log("value: ", modifierGroupId);
-    // @* var modifierGroupId = $(".groupInNewItemSelect").data('id'); *@
 
     $.ajax({
         url: 'Menu/GetModifierGroupForNewItem',
@@ -845,7 +839,7 @@ $(document).on('change', "#ModifierGroupsInNewItemSelect", function () {
                     <input type="hidden" name="ModifierGroupIds" value="${response.data.modifierGroupId}">
                     <div class="modifierHeading fw-bold d-flex justify-content-between">
                         ${response.data.modifierGroupName}
-                        <button type="button" id="deleteModifierGroupInNewModal" data-id="${response.data.modifierGroupId}" class="btn bg-transparent border-none">
+                        <button type="button"  data-id="${response.data.modifierGroupId}" class="btn bg-transparent deleteModifierGroupInNewModal_${response.data.modifierGroupId} border-none">
                             <img src="/images/Download/trash.svg" width="20px" alt="delete">
                         </button>
                     </div>
@@ -875,11 +869,10 @@ $(document).on('change', "#ModifierGroupsInNewItemSelect", function () {
                 </div>`
                 );
 
-                console.log("Got modifier Group", response.data);
-                console.log("Min value", $(`.modifierForNewItemSelectMin[data-id="${response.data.modifierGroupId}"]`).val());
-                console.log("Max value", $(`.modifierForNewItemSelectMax[data-id="${response.data.modifierGroupId}"]`).val());
-                $(document).on('click', "#deleteModifierGroupInNewModal", function () {
+                $(document).on('click', `.deleteModifierGroupInNewModal_${response.data.modifierGroupId}`, function () {
                     let modifierGroupId = $(this).data('id');
+                    // modifierGroupForAdd.filter(id => id !== modifierGroupId);
+                    modifierGroupForAdd.pop(modifierGroupId);
                     console.log("ksdamdsmda", modifierGroupId);
                     $(`.appendModifierGroupInNewItem_${modifierGroupId}`).remove();
                 });
@@ -896,95 +889,7 @@ $(document).on('change', "#ModifierGroupsInNewItemSelect", function () {
     // @* console.log("ModifierGroupsInNewItemSelect changed", modifierGroupId); *@
 });
 
-// Trigger the AJAX call when the edit link is clicked
-// $('body').on('click', '.edit-icon', function (e) {
-//     e.preventDefault();
-//     var itemId = $(this).data('id');
-//     $.ajax({
-//         url: 'Menu/GetMenuItemForEdit',
-//         type: 'GET',
-//         data: { id: itemId },
-//         success: function (response) {
-//             // @* $('#EditItemModal').modal('show'); *@
-//             // @* $('#EditItemModal .modal-dialog .modal-content').html(response); *@
-//             console.log("data :", response.data.item);
-//             var data = response.data.item;
 
-//             $("#editItemId").val(data.itemid);
-//             $("#editItemCategory").val(data.categoryId);
-//             $("#editItemName").val(data.name);
-//             $("#editItemType").val(data.itemtype);
-//             $("#editItemRate").val(data.rate);
-//             $("#editItemQuantity").val(data.quantity);
-//             $("#editItemUnit").val(data.unit);
-//             $("#editItemAvailable").val(data.isavailable);
-//             $("#editItemTax").val(data.tax);
-//             $("#editItemShortCode").val(data.itemShortCode);
-//             $("#editItemDescription").val(data.description);
-//             // @* $("#editItemImage").val(data.itemTypeIcon); *@
-//             $("#editItemModifierGroupDropDown").val(data.modifierGroupIds);
-
-
-
-// let modifiersHTML = response.data.existingModifiers.map(modifier => `
-//     <div class="modifier-item w-100 d-flex justify-content-between">
-//         <div>
-//             ${modifier.name}
-//         </div>
-//         <div class="me-2">
-//             ${modifier.rate}
-//         </div>
-//     </div>
-// `).join("");
-
-// console.log("Got modifier Group", response.data);
-// $("#ModifierGroupsInEditItemModal").append(
-//     `<div  class="mt-2 appendModifierGroupInNewItem_${response.data.modifierGroupId}">
-//         <input type="hidden" name="ModifierGroupIds" value="${response.data.modifierGroupId}">
-//         <div class="modifierHeading fw-bold d-flex justify-content-between">
-//             ${response.data.modifierGroupName}
-//             <button type="button" id="deleteModifierGroupInEditModal" data-id="${response.data.modifierGroupId}" class="btn bg-transparent border-none">
-//                 <img src="/images/Download/trash.svg" width="20px" alt="delete">
-//             </button>
-//         </div>
-//         <div>
-//             <div class="row">
-//                 <div class="col-6">
-//                     <select class="form-select rounded-pill modifierForItemSelect">
-//                         <option value="" selected>0</option>
-//                         <option value="">1</option>
-//                         <option value="">2</option>
-//                         <option value="">3</option>
-//                     </select>
-//                 </div>
-//                 <div class="col-6">
-//                     <select class="form-select rounded-pill modifierForItemSelect">
-//                         <option value="" selected>0</option>
-//                         <option value="">1</option>
-//                         <option value="">2</option>
-//                         <option value="">3</option>
-//                     </select>
-//                 </div>
-//             </div>
-//             <div id="modifiersInNewItem">
-//                 ${modifiersHTML}
-//             </div>
-//         </div>
-//     </div>`
-// );
-// $(document).on('click', "#deleteModifierGroupInEditModal", function () 
-// {
-//     let modifierGroupId = $(this).data('id');
-//     console.log("ksdamdsmda", modifierGroupId);
-//     $(`.appendModifierGroupInNewItem_${modifierGroupId}`).remove();
-// }); 
-//         },
-//         error: function (xhr, status, error) {
-//             console.log('Error:', error);
-//             // @* alert('There was an error loading the item data.'); *@
-//         }
-//     });
-// });
 
 // @* Validations *@
 
@@ -1054,15 +959,6 @@ $("#addMenuItemForm").submit(function (e) {
 
 function addItem() {
     var customSwitch = $(".newItemAvailability").is(":checked");
-    // var modifierGroupData = new Map();
-
-    // modifierGroupForAdd.forEach(function (modifierGroupId) {
-    //     var min = $(`.modifierForNewItemSelectMin[data-id="${modifierGroupId}"]`).val();
-    //     var max = $(`.modifierForNewItemSelectMax[data-id="${modifierGroupId}"]`).val();
-
-    //     modifierGroupData.set(modifierGroupId, { Min: min, Max: max });
-    // });
-
     var modifierGroupDataArray = [];
 
     modifierGroupForAdd.forEach(function (modifierGroupId) {
@@ -1090,23 +986,7 @@ function addItem() {
         Description: $("#newItemDescription").val(),
         ModifierGroupData: modifierGroupDataArray
     };
-    
-    // let newItemData = {
-    //     categoryId: $("#newItemCategoryId").val(),
-    //     Name: $("#newItemName").val(),
-    //     Itemtype: $("#newItemType").val(),
-    //     Rate: $("#newItemRate").val(),
-    //     Quantity: $("#newItemQuantity").val(),
-    //     Unit: $("#newItemUnit").val(),
-    //     Isavailable: customSwitch,
-    //     Tax: $("#newItemTaxPercentage").val(),
-    //     ItemShortCode: $("#newItemShortCode").val(),
-    //     uploadimage: $("#ItemType").val(),
-    //     Description: $("#newItemDescription").val(),
-    //     // ModifierGroupIds: JSON.stringify(modifierGroupForAdd),
-    //     ModifierGroupData: JSON.stringify(modifierGroupData),
-    //     // ModifierGroupIds:   //Fetch all modifierGroup Ids in add Item modal
-    // };
+
     let ab = $("#addMenuItemForm").serialize();
     console.log("data :", ab);
 
@@ -1161,8 +1041,6 @@ function addModifierGroup() {
 
     console.log("Add Button");
     console.log("1456987", selectedModifiersForAdd);
-    // console.log("nameDescription", JSON.stringify(nameDescription));
-    //  jsonStringForAdd = JSON.stringify(jsonStringForAdd); 
     console.log("stringify data", jsonStringForAdd);
     var formData = JSON.stringify(jsonStringForAdd);
 
@@ -1191,59 +1069,146 @@ function addModifierGroup() {
             console.log("error");
         }
     });
-
 }
 
+var modifierGroupForEdit = [];
+// Trigger the AJAX call when the edit link is clicked
+$('body').on('click', '.edit-icon', function (e) {
+    e.preventDefault();
+    var itemId = $(this).data('id');
+    $.ajax({
+        url: 'Menu/GetMenuItemForEdit',
+        type: 'GET',
+        data: { id: itemId },
+        success: function (response) {
+            $("#EditItemModal").html(response);
 
+            var ids = $("#editItemModifierGroupIdsForEdit").val() || [];
+            var idList = [];
+            if (ids.length !== 0) {
+                idList = ids.split(',').map(ids => parseInt(ids));
+                console.log("idList", idList);
+                idList.forEach(function (modifierGroupId) {
+                    modifierGroupForEdit.push(modifierGroupId);
+                    $(`.deleteModifierGroupInEditModal_${modifierGroupId}`).on('click', function () {
+                        let modifierGroupId = $(this).data('id');
+                        modifierGroupForEdit.pop(modifierGroupId);
+                        console.log("modifierGroupId", modifierGroupId);
+                        $(`.appendModifierGroupInEditItem_${modifierGroupId}`).remove();
+                    });
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.log('Error:', error);
+            // @* alert('There was an error loading the item data.'); *@
+        }
+    });
+});
 
-//On clicking on addModifierBtn
-// $(document).on('click', '#addModifierGroupBtn', function (e) {
-// console.log("Add Button");
-// console.log("1456987", selectedModifiersForAdd);
-// let modifierGroupName = $("#newModifierGroupName").val();
-// let modifierGroupDescription = $("#newModifierGroupDescription").val();
-// jsonStringForAdd = JSON.stringify(jsonStringForAdd);
-// console.log("stringify data", jsonStringForAdd);
-// var formData = jsonStringForAdd
+//For append Modifier Groups in Edit Item Modal
+$(document).on('change', "#ModifierGroupsInEditItemSelect", function () {
+    var modifierGroupIdForEdit = $(this).val();
+    modifierGroupForEdit.push(modifierGroupIdForEdit);
+    console.log("value: ", modifierGroupIdForEdit);
 
-// $.ajax({
-//     url: '@Url.Action("AddModifierGroup", "Menu")' + '?name=' + modifierGroupName + '&description=' + modifierGroupDescription,
-//     type: 'POST',
-//     data: formData ,
-//     contentType: 'application/json',
-//     success: function() {
-//         console.log("Success group added");
-//         $('#addModifierGroupModal').modal('hide');
-//     } ,
-//     error: function() {
-//         $('#addModifierGroupModal').modal('hide');
-//         console.log("error")
-//     } 
-// });
-// }); 
+    $.ajax({
+        url: 'Menu/GetModifierGroupForEditItem',
+        type: 'GET',
+        data: { modifierGroupId: modifierGroupIdForEdit },
+        contentType: 'application/json',
+        success: function (response) {
+            if (response.success) {
+                let modifiersHTML = response.data.existingModifiers.map(modifier => `
+                <div class="modifier-item w-100 d-flex justify-content-between">
+                    <div>
+                        ${modifier.name}
+                    </div>
+                    <div class="me-2">
+                        ${modifier.rate}
+                    </div>
+                </div>
+            `).join(""); // Convert array to string 
 
+                console.log("Got modifier Group", response.data);
+                $("#ModifierGroupsInEditItemModal").append(
+                    `<div  class="mt-2 appendModifierGroupInEditItem_${response.data.modifierGroupId}">
+                    <input type="hidden" name="ModifierGroupIds" value="${response.data.modifierGroupId}">
+                    <div class="modifierHeading fw-bold d-flex justify-content-between">
+                        ${response.data.modifierGroupName}
+                        <button type="button"  data-id="${response.data.modifierGroupId}" class="btn bg-transparent deleteModifierGroupInEditModal_${response.data.modifierGroupId} border-none">
+                            <img src="/images/Download/trash.svg" width="20px" alt="delete">
+                        </button>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="col-6">
+                                <select class="form-select rounded-pill modifierForEditItemSelectMin" data-id="${response.data.modifierGroupId}">
+                                    <option value="" selected>0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <select class="form-select rounded-pill modifierForEditItemSelectMax" data-id="${response.data.modifierGroupId}">
+                                    <option value="" selected>0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="modifiersInNewItem">
+                            ${modifiersHTML}
+                        </div>
+                    </div>
+                </div>`
+                );
+
+                $(document).on('click', `.deleteModifierGroupInEditModal_${response.data.modifierGroupId}`, function () {
+                    let modifierGroupId = $(this).data('id');
+                    modifierGroupForEdit.pop(modifierGroupId);
+                    $(`.appendModifierGroupInEditItem_${modifierGroupId}`).remove();
+                });
+            } else {
+                console.error(response.message);
+            }
+        },
+        error: function () {
+            console.log("error");
+        }
+    });
+});
 
 $('body').on('submit', '#editMenuItemForm', function (e) {
+    e.preventDefault();
 
     if (!$(this).valid()) {
         console.log('Form is invalid');
         return;
     }
 
-    e.preventDefault();
-    var internChoice = $('#ItemType option:selected').val();
-    console.log(internChoice);
-    var formData = $(this).serialize();
-    console.log("editMenuItemFormData", formData);
-    var editMenuItemForm = $("#editMenuItemForm").val();
-    console.log("editMenuItemForm", editMenuItemForm);
+    var formData = new FormData(this);
 
-    formData += '&#ItemType=' + encodeURIComponent(internChoice);
-    console.log(formData);
+    var internChoice = $('#ItemType option:selected').val();
+    formData.set("Item.Itemtype", internChoice);
+
+    modifierGroupForEdit.forEach(function (modifierGroupId, index) {
+        var min = parseInt($(`.modifierForEditItemSelectMin[data-id="${modifierGroupId}"]`).val()) || 0;
+        var max = parseInt($(`.modifierForEditItemSelectMax[data-id="${modifierGroupId}"]`).val()) || 0;
+
+        formData.append(`Item.ModifierGroupData[${index}].Id`, modifierGroupId);
+        formData.append(`Item.ModifierGroupData[${index}].Min`, min);
+        formData.append(`Item.ModifierGroupData[${index}].Max`, max);
+    });
+
     $.ajax({
         url: 'Menu/EditMenuItem',
         type: 'POST',
         data: formData,
+        processData: false,
+        contentType: false,
         success: function (response) {
             if (response.success) {
                 $('#EditItemModal').modal('hide');
@@ -1251,8 +1216,7 @@ $('body').on('submit', '#editMenuItemForm', function (e) {
                 $('body').removeClass('modal-open');
                 toastr.success(response.message);
                 location.reload();
-            }
-            else {
+            } else {
                 toastr.error(response.message);
             }
         },
@@ -1358,6 +1322,14 @@ function loadModifiers(pageNumber, pageSize) {
             $("#existingModifiersForAddGroupTable").empty();
             $('#existingModifiersForAddGroupTable').html(response);
             bindPaginationEvents();
+            //For check all existing Modifiers
+            existingModifiersForAdd.forEach(function (modifierId) {
+                var modifierId = $(`.modifiersIdsForAdd[data-id="${modifierId}"]`).data('id');
+                if(modifierId !== undefined) {
+                    document.querySelector(`.modifiersIdsForAdd[data-id="${modifierId}"]`).checked = true;
+                }
+            }
+            );
         },
         error: function () {
             alert('Failed to load data.');
@@ -1370,13 +1342,13 @@ function bindPaginationEvents() {
     var totalPages = $("#totalPagesForExistingModifiers").val();
     var totalItems = $("#totalItemsForExistingModifiers").val();
 
-    $('#prevPage').off('click').on('click', function () {
+    $('#prevPageForAddExistingModifiersAdd').off('click').on('click', function () {
         if (currentPage > 1) {
             loadModifiers(currentPage - 1, $('#pageSizesForAddExistingModifiers').val());
         }
     });
 
-    $('#nextPage').off('click').on('click', function () {
+    $('#nextPageForAddExistingModifiersAdd').off('click').on('click', function () {
         if (currentPage < totalPages) {
             currentPage = parseInt(currentPage) + 1;
             loadModifiers(currentPage, $('#pageSizesForAddExistingModifiers').val());
@@ -1394,3 +1366,17 @@ $('#addExistingModal').on('shown.bs.modal', function () {
     loadModifiers(1, $('#pageSizesForAddExistingModifiers').val());
     // bindPaginationEvents();
 });
+
+function openAddModifierGroupModal() {
+    $("#addModifierGroupModal").modal("show");
+}
+function openAddExistingModifiersModal() {
+    $("#addModifierGroupModal").modal("hide");
+    $("#addExistingModal").modal("show");
+
+    //For checking the checkboxes for row of the addExistingModifiers
+    var rowModifierGroupCheckBoxes = document.querySelectorAll('.rowModifierCheckForAdd');
+    console.log("rowModifierCheckForAdd", rowModifierGroupCheckBoxes);
+
+
+}

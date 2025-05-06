@@ -17,9 +17,11 @@ public interface IMenuRepository
     Task<bool> EditCategory(CategoryViewModel model);
     Task<bool> DeleteCategory(int categoryId);
     Task<bool> AddItem(Item item);
+    Task<bool> UpdateItemModifierGroupMappings(Itemmodifiergroupmapping itemModifierGroupMapping);
     Item GetItemById(int id);
     List<Menucategory> GetAllCategories();
     void UpdateItem(Item item);
+    Task<List<Itemmodifiergroupmapping>> GetItemModifierGroupMappingsById(int itemId);
     bool DeleteItem(int itemId);
     Task<List<Item>> GetModifiersForExistingModifiersForAdd(int pageNumber, int pageSize);
     Task<bool> AddModifierGroup(Modifiergroup modifiergroup);
@@ -27,6 +29,7 @@ public interface IMenuRepository
     bool UpdateModifierGroup(Modifiergroup model);
     bool DeleteModifierGroup(Modifiergroup modifierGroup);
     Task<bool> AddItemModifierGroupMappings(Itemmodifiergroupmapping modifierMapping);
+    Task<bool> DeleteItemModifierGroupMappings(Itemmodifiergroupmapping model);
     Itemmodifiergroupmapping GetItemModifierGroupMappingsById(int modifierId, int modifierGroupId);
     Task<int> GetTotalCountOfModifierMapping();
     Task<List<ModifiersViewModel>> GetExistingModifiersForEdit(int id);

@@ -19,7 +19,7 @@
                                     <option value="">Select a Category</option>
                                     @foreach (var category in Model.Categories)
                                     {
-                                        
+
                                         @if (category.Categoryid == Model.Item.CategoryId)
                                         {
                                             <option value="@category.Categoryid" selected>
@@ -152,7 +152,7 @@
                         @* Modifier Groups *@
                         <div class=" mt-3">
                             @* <label for="editItemModifierGroupDropDown" class="form-label">Select Modifier Group(s)</label> *@
-                            <select class="form-select" id="editItemModifierGroupDropDown">
+                            <select class="form-select" id="ModifierGroupsInEditItemSelect">
                                 <option value="">Select Modifier Group(s)</option>
                                 <@foreach (var modifierGroup in Model.ModifierGroups)
                                 {
@@ -165,33 +165,34 @@
                         <div id="ModifierGroupsInEditItemModal">
                             @if(Model.Item.ModifierGroupIds != null)
                             {
+                                <input type="hidden" id="editItemModifierGroupIdsForEdit" value="@string.Join(",", Model.Item.ModifierGroupIds)" />
                                 @foreach(var modifierGroup in Model.Item.ModifierGroups)
                                 {
-                                    <div  class="mt-2 appendModifierGroupInEditItem_@modifierGroup.ModifierGroupId">
-                                        @* <input type="hidden" name="ModifierGroupIds" value=""> *@
+                                    <div class="mt-2 appendModifierGroupInEditItem_@modifierGroup.ModifierGroupId">
                                         <div class="modifierHeading fw-bold d-flex align-items-center justify-content-between">
                                             <div>@modifierGroup.modifierGroupName</div>
-                                            <button type="button" class="deleteModifierGroupInEditModal" data-id="@modifierGroup.ModifierGroupId" class="btn bg-transparent border-none">
+                                            <button type="button" class="deleteModifierGroupInEditModal_@modifierGroup.ModifierGroupId" data-id="@modifierGroup.ModifierGroupId" class="btn bg-transparent border-none">
                                                 <img src="/images/Download/trash.svg" width="20px" alt="delete">
                                             </button>
                                         </div>
                                         <div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <select class="form-select rounded-pill modifierForItemSelect">
-                                                        <option value="@modifierGroup.Min" selected>@modifierGroup.Min</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-6">
-                                                    <select class="form-select rounded-pill modifierForItemSelect">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <select data-id="@modifierGroup.ModifierGroupId" class="form-select modifierForEditItemSelectMin rounded-pill modifierForItemSelect">
+                                                    <option value="@modifierGroup.Min" selected>@modifierGroup.Min</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-6">
+                                                    <select data-id="@modifierGroup.ModifierGroupId" class="form-select rounded-pill modifierForEditItemSelectMax modifierForItemSelect">
                                                         <option value="@modifierGroup.Max" selected>@modifierGroup.Max</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
                                                         <option value="3">3</option>
-                                                    </select>
+                                                </select>
                                                 </div>
                                             </div>
                                             <div id="modifiersInNewItem d-flex flex-column">
@@ -203,7 +204,7 @@
                                         </div>
                                     </div>
                                 }
-
+                                
                             }
                             
                         </div>
@@ -221,25 +222,3 @@
         </form>
     </div>
 </div>
-
-
-<script>
-    $('#myDropDown').change(function () {
-
-        /* Get the selected value of dropdownlist */
-        var selectedID = $(this).val();
-
-        /* Request the partial view with .get request. */
-        $.get('/Menu/GetModifierPartialData/' + selectedID, function (data) {
-
-            /* data is the pure html returned from action method, load it to your page */
-            $('#ModifierInItem').html(data);
-            /* little fade in effect */
-            $('#partialPlaceHolder').fadeIn('fast');
-        });
-    });
-
-    @* $('#ItemType').change(function () {
-        
-    });     *@
-</script>

@@ -176,11 +176,9 @@
             });
         });
 
-        $(".modal").on('hidden.bs.modal', function () {
-            @* $(this).data('modal', null); *@
-            @* $(".modal").html(""); *@
+        @* $(".modal").on('hidden.bs.modal', function () {
             $(this).find('form').trigger('reset');
-        });
+        }); *@
 
         function PageReload() {
             location.reload();

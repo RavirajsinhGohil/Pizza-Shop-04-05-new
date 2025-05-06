@@ -18,7 +18,7 @@
             {
                 <tr>
                     <th scope="row" style="border-top: 1px solid rgb(182, 177, 177);">
-                        <input class="form-check-input rowModifierCheckForAdd" type="checkbox"
+                        <input class="form-check-input modifiersIdsForAdd rowModifierCheckForAdd_@modifier.ModifierId" type="checkbox"
                             data-id='@modifier.ModifierId' data-name="@modifier.Name">
                         <input type="hidden" data-id="@modifier.ModifierId">
                     </th>
@@ -47,9 +47,9 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <span id="currentPageDisplay">Page @Model.CurrentPage of @Model.TotalPages</span>
-        <button id="prevPage" class="ms-2 btn bg-white border @(Model.CurrentPage == 1 ? "" : "fw-bold")" 
+        <button id="prevPageForAddExistingModifiersAdd" class="ms-2 btn bg-white border @(Model.CurrentPage == 1 ? "" : "fw-bold")" 
             @(Model.CurrentPage == 1 ? "disabled d-none" : "")>&lt;</button>
-        <button id="nextPage" class=" btn bg-white border @(Model.CurrentPage == Model.TotalPages ? "" : "fw-bold")" 
+        <button id="nextPageForAddExistingModifiersAdd" class=" btn bg-white border @(Model.CurrentPage == Model.TotalPages ? "" : "fw-bold")" 
             @(Model.CurrentPage == Model.TotalPages ? "disabled d-none" :"") >&gt;</button>
     </div>
 </div>

@@ -46,13 +46,11 @@
         </select>
     </div>
 
-    @* <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center">
         <span id="currentPageDisplay">Page @Model.CurrentPage of @Model.TotalPages</span>
-        <button id="prevPage" class="mx-2" @(Model.CurrentPage == 1 ? "disabled" : "") style="border: 1px solid grey; background-color: white; border-radius: 5px;
-        "><i class="bi bi-chevron-left"></i></button>
-        <button id="nextPage" class="ms-2" @(Model.CurrentPage == Model.TotalPages ? "disabled" :
-            "") style="border: 1px solid grey; background-color: white; border-radius: 5px;"><i class="bi bi-chevron-right"></i></button>
-    </div> *@
+        <button id="prevPage" class="mx-2" @(Model.CurrentPage == 1 ? "disabled" : "")>&lt;</button>
+        <button id="nextPage" class="ms-2" @(Model.CurrentPage == Model.TotalPages ? "disabled" :"") >&gt;</button>
+    </div>
 </div>
 <div class="create_cancel_btn my-3">
     <button type="button" id="saveAddExistingModifiers" class="btn btn-primary">Add</button>

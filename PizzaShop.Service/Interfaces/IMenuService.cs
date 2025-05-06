@@ -16,7 +16,7 @@ public interface IMenuService
     Task<bool> DeleteCategory(int categoryId);
     Task<bool> AddItem(ItemViewModel model);
     Task<MenuItemViewModel> GetMenuItemForEdit(int id);
-    bool UpdatedMenuItem(int id, MenuItemViewModel model);
+    Task<bool> UpdatedMenuItem(int id, MenuItemViewModel model);
     bool DeleteItem(int itemId);
     Task<List<ModifiersViewModel>> GetModifiersForExistingModifiersForAdd(int pageNumber, int pageSize);
     Task<MenuItemViewModel> GetMenuItemModelForAddExistingModifier(int pageNumber, int pageSize);
